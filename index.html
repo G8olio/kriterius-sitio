@@ -13,7 +13,7 @@
   :root{
     --fondo:#101A0C; --sup:#182312; --sup2:#1F2C18; --borde:#2C3A24;
     --verde:#3D6B33; --verde-cl:#5C8C50; --verde-hondo:#20351A;
-    --ambar:#B5762A; --ambar-cl:#C98F3E; --dorado:#9A8A5A;
+    --ambar:#D2882C; --ambar-cl:#EBA345; --dorado:#9A8A5A;
     --texto:#E7E3D6; --texto2:#9AA18E;
     --serif:"Palatino Linotype","Book Antiqua",Palatino,"URW Palladio L",serif;
     --sans:"Avenir Next",Avenir,"Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -45,8 +45,9 @@
   .sello .pt{width:7px;height:7px;border-radius:50%;background:var(--ambar)}
   .cta{display:inline-block;background:var(--ambar);color:#101A0C;text-decoration:none;
     font-weight:600;padding:14px 36px;border-radius:2px;font-size:1rem;
-    letter-spacing:.02em;transition:background .15s}
-  .cta:hover{background:var(--ambar-cl)}
+    letter-spacing:.02em;transition:background .15s,box-shadow .15s;
+    box-shadow:0 0 14px rgba(210,136,44,.18)}
+  .cta:hover{background:var(--ambar-cl);box-shadow:0 0 22px rgba(235,163,69,.32)}
   .nota-cta{font-size:.88rem;color:var(--texto2);margin-top:14px}
 
   section{padding:70px 0;border-bottom:1px solid var(--borde)}
@@ -59,6 +60,10 @@
 
   .muestra{background:rgba(24,35,18,.86);border:1px solid var(--borde);border-left:2px solid var(--ambar);
     padding:24px 26px;margin:28px 0;font-size:.92rem;line-height:1.65}
+  .fuente-tit{font-family:var(--serif);font-size:1.12rem;color:var(--ambar-cl);
+    margin:38px 0 14px;padding-top:22px;border-top:1px solid var(--borde)}
+  .muestra .meta{font-size:.8rem;color:var(--texto2);line-height:1.65;margin-bottom:13px;
+    padding-bottom:12px;border-bottom:1px solid var(--borde)}
   .muestra .cita{color:#EFE7D8;margin-bottom:11px}
   .muestra .txt{color:var(--texto2);font-style:italic;margin-bottom:11px}
   .muestra .liga{color:var(--verde-cl);word-break:break-all;font-size:.83rem}
@@ -180,20 +185,21 @@
 
     <div class="sello"><span class="pt"></span><span class="vers">Gratuito · Código abierto</span></div>
 
-    <p class="lema">Pregúntale a Claude por una tesis y te la trae de la fuente.</p>
+    <p class="lema">Le pides a Claude una tesis y te la encuentra directo desde la fuente
+       oficial. Sin inventos ni alucinaciones.</p>
     <p class="sub">Trabaja con el Semanario Judicial, el TFJA, el Diario Oficial y la Corte
        Interamericana desde la conversación donde ya estás. Lo que te responde viene con su
        cita completa y la liga para abrir el original.</p>
 
     <a href="instalacion.html" class="cta">Obtener KriteriusMX</a>
-    <p class="nota-cta">Se conecta en dos minutos. No pide tarjeta.</p>
+    <p class="nota-cta">Se conecta en dos minutos. Gratis. No pide tarjeta.</p>
   </div>
 </header>
 
 <section id="que-es">
   <div class="wrap">
-    <span class="vers eyebrow">Qué es</span>
-    <h2>Claude consultando directo los portales oficiales</h2>
+    <span class="vers eyebrow">¿Qué es?</span>
+    <h2>Es una línea directa entre la IA y los criterios oficiales</h2>
 
     <p>KriteriusMX es una extensión que se agrega a tu cuenta de Claude. Cuando le preguntas
        algo, va y lo busca en los sitios de la SCJN, del TFJA, del Diario Oficial o de la Corte
@@ -202,19 +208,43 @@
     <p>Cada criterio llega con su número de registro y con la liga. Abres, lees el original y
        confirmas que dice lo que Claude te dijo. Toma cinco segundos.</p>
 
+    <h3 class="fuente-tit">Criterios del Poder Judicial de la Federación</h3>
     <p>Los resultados vienen acomodados por obligatoriedad. Arriba queda lo que resolvió el
        Pleno, luego las Salas, y hacia abajo el resto hasta llegar a Tribunales Colegiados.
-       La jurisprudencia pesa más que una tesis aislada y así aparece. Si preguntas por
-       criterios interamericanos, los casos contra México encabezan la lista, porque son
-       los que vinculan al Estado mexicano de manera directa.</p>
+       La jurisprudencia pesa más que una tesis aislada y así aparece.</p>
+
+    <div class="muestra">
+      <div class="meta">Registro digital: 2024830<br>
+        Instancia: Primera Sala · Undécima Época<br>
+        Materia(s): Común<br>
+        Tesis: 1a./J. 84/2022 (11a.)<br>
+        Fuente: Gaceta del Semanario Judicial de la Federación. Libro 14, junio de 2022, Tomo V, página 4076<br>
+        Tipo: Jurisprudencia</div>
+      <div class="cita">CONTROL DE CONSTITUCIONALIDAD Y CONVENCIONALIDAD EX OFFICIO. METODOLOGÍA PARA REALIZARLO.</div>
+      <div class="txt">Hechos: En un juicio ordinario civil se demandó, entre otras cuestiones,
+        la nulidad de un contrato de prestación de servicios profesionales que involucró el acto
+        traslativo de dominio de un bien inmueble, en tanto que el demandado reconvino la acción
+        pro forma…<br><br>
+        Amparo directo en revisión 2283/2013. Roberto Esteban Chávez Salinas. 23 de marzo de 2022.
+        Cinco votos…</div>
+      <div class="liga">https://sjf2.scjn.gob.mx/detalle/tesis/2024830</div>
+    </div>
+
+    <h3 class="fuente-tit">Criterios de la Corte Interamericana</h3>
+    <p>Aquí los casos contra México encabezan la lista, porque son los que vinculan al Estado
+       mexicano de manera directa. La unidad de resultado es el párrafo, así que llega el texto
+       exacto que vas a citar.</p>
 
     <div class="muestra">
       <div class="cita">Corte IDH. Caso Mendoza y otros Vs. Argentina. Excepciones Preliminares, Fondo y Reparaciones. Sentencia de 14 de mayo de 2013. Serie C No. 260, párr. 151.</div>
-      <div class="txt">"151. Para la determinación de las consecuencias jurídicas del delito cuando ha sido cometido por un niño, opera de manera relevante el principio de proporcionalidad…"</div>
-      <div class="liga">Sentencia: bjdh.org.mx/interamericano/doc?doc=casos_sentencias/seriec_260_esp.pdf</div>
+      <div class="txt">"151. Para la determinación de las consecuencias jurídicas del delito
+        cuando ha sido cometido por un niño, opera de manera relevante el principio de
+        proporcionalidad…"</div>
+      <div class="liga">bjdh.org.mx/interamericano/doc?doc=casos_sentencias/seriec_260_esp.pdf</div>
     </div>
-    <p class="apagado" style="font-size:.9rem">Una respuesta real. La cita ya viene armada
-       en formato oficial y el párrafo va completo, entrecomillado, listo para pegarse.</p>
+
+    <p class="apagado" style="font-size:.9rem">Los dos son respuestas reales, sin retocar.
+       Cada una trae su liga para abrir el original.</p>
 
     <p style="margin-top:30px"><a href="instalacion.html" class="cta">Obtener KriteriusMX</a></p>
   </div>

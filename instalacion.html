@@ -10,7 +10,7 @@
   :root{
     --fondo:#101A0C; --sup:#182312; --sup2:#1F2C18; --borde:#2C3A24;
     --verde:#3D6B33; --verde-cl:#5C8C50; --verde-hondo:#20351A;
-    --ambar:#B5762A; --ambar-cl:#C98F3E; --dorado:#9A8A5A;
+    --ambar:#D2882C; --ambar-cl:#EBA345; --dorado:#9A8A5A;
     --texto:#E7E3D6; --texto2:#9AA18E;
     --serif:"Palatino Linotype","Book Antiqua",Palatino,"URW Palladio L",serif;
     --sans:"Avenir Next",Avenir,"Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -73,19 +73,40 @@
   .probar ul{margin:14px 0 0 20px;font-size:.95rem;color:var(--texto2)}
   .probar li{margin-bottom:10px}
 
-  .aporta{background:rgba(24,35,18,.86);border-top:1px solid var(--borde);padding:58px 0;margin-top:24px}
-  .aporta p{color:var(--texto2)}
-  .montos{display:flex;gap:11px;flex-wrap:wrap;margin:26px 0 20px}
+  .columnas{display:grid;grid-template-columns:1fr 340px;gap:44px;align-items:start;
+    max-width:1120px;margin:0 auto;padding:0 26px}
+  .columnas main{padding:48px 0;min-width:0}
+  .columnas main .wrap{max-width:none;padding:0}
+
+  .aporta{background:rgba(24,35,18,.9);border:1px solid var(--borde);
+    padding:28px 26px;margin-top:48px;position:sticky;top:24px}
+  .aporta .wrap{max-width:none;padding:0}
+  .aporta p{color:var(--texto2);font-size:.93rem;max-width:none}
+  .aporta h2{font-size:1.28rem;margin-bottom:12px}
+  .montos{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:22px 0 16px}
   .monto{border:1px solid var(--borde);color:var(--texto);text-decoration:none;
-    padding:13px 26px;font-weight:600;background:rgba(31,44,24,.86);transition:all .15s}
+    padding:12px 10px;font-weight:600;background:rgba(31,44,24,.86);transition:all .15s;
+    text-align:center;font-size:.95rem}
   .monto:hover{border-color:var(--ambar);color:var(--ambar-cl)}
   .monto.destacado{background:var(--ambar);border-color:var(--ambar);color:#101A0C}
   .monto.destacado:hover{background:var(--ambar-cl);border-color:var(--ambar);color:#101A0C}
-  .chico{font-size:.86rem;max-width:56ch}
+  .chico{font-size:.8rem;max-width:none;line-height:1.55}
+  .mensual{border:1px solid var(--borde);background:rgba(16,26,12,.55);
+    padding:18px 20px;margin:22px 0 18px}
+  .mensual h3{margin-bottom:8px;font-size:1.05rem}
+  .mensual p{font-size:.88rem;margin-bottom:10px}
+  .mensual .ojo{border-left:2px solid var(--ambar);padding-left:14px;color:var(--texto)}
+  .mensual .monto{display:inline-block;margin-top:6px}
 
   footer{padding:40px 0 54px;font-size:.83rem;color:var(--texto2)}
   footer p{margin-bottom:11px;max-width:none;color:var(--texto2)}
 
+  @media(max-width:900px){
+    .columnas{grid-template-columns:1fr;gap:0;padding:0}
+    .columnas main{padding:48px 26px}
+    .aporta{position:static;margin:0 26px 40px}
+    .montos{grid-template-columns:1fr 1fr}
+  }
   @media(max-width:640px){
     .paso{grid-template-columns:34px 1fr;gap:15px}
     .num{width:34px;height:34px;font-size:1rem}
@@ -176,6 +197,7 @@
   </div>
 </header>
 
+<div class="columnas">
 <main>
   <div class="wrap">
 
@@ -256,7 +278,7 @@
   </div>
 </main>
 
-<section class="aporta">
+<aside class="aporta">
   <div class="wrap">
     <span class="vers">Es gratis y así se queda</span>
     <h2 style="margin-top:14px">Ayúdame a mantenerlo encendido</h2>
@@ -266,17 +288,30 @@
        El conector ya es tuyo y funciona igual si decides no hacerlo.</p>
 
     <div class="montos">
-      <a class="monto destacado" href="#" data-monto="50">$50 MXN</a>
-      <a class="monto" href="#" data-monto="100">$100</a>
-      <a class="monto" href="#" data-monto="250">$250</a>
-      <a class="monto" href="#" data-monto="otro">Otra cantidad</a>
+      <a class="monto destacado" href="https://donate.stripe.com/8x2fZh57U3Ut2C5eTVgjC01">$49 MXN</a>
+      <a class="monto" href="https://donate.stripe.com/5kQcN5eIu2QpfoR8vxgjC02">$199 MXN</a>
+      <a class="monto" href="https://donate.stripe.com/aFa5kD57U3Uta4x4fhgjC03">$499 MXN</a>
+      <a class="monto" href="https://donate.stripe.com/aFa14n9oa8aJ5OhdPRgjC04">Otra cantidad</a>
+    </div>
+    <p class="chico">Se cobran una sola vez. La opción de otra cantidad va en dólares y
+       arranca desde 2 USD, sin tope.</p>
+
+    <div class="mensual">
+      <h3>O apóyalo cada mes</h3>
+      <p>Si prefieres algo constante en lugar de un pago suelto, hay una opción de
+         <strong>$25 pesos mensuales</strong>.</p>
+      <p class="ojo">Este sí es un cargo recurrente: se te cobra cada mes hasta que lo
+         canceles. Puedes cancelarlo cuando quieras desde el correo de confirmación que te
+         manda Stripe, o escribiéndome.</p>
+      <a class="monto" href="https://donate.stripe.com/5kQfZh0RE9eNb8BbHJgjC00">$25 al mes</a>
     </div>
 
     <p class="chico">Pago con tarjeta, Apple Pay o Google Pay. Los datos de tu tarjeta no
        pasan por aquí. Al no ser donataria autorizada ante el SAT, esta aportación no es
        deducible de impuestos.</p>
   </div>
-</section>
+</aside>
+</div>
 
 <footer>
   <div class="wrap">
