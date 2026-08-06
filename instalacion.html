@@ -138,10 +138,11 @@
     font-size:1.5rem;line-height:1;cursor:pointer;padding:6px 8px;font-family:var(--sans)}
   .cerrar:hover{color:var(--ambar-cl)}
   .salida{border-top:1px solid var(--borde);margin-top:24px;padding-top:22px;text-align:center}
-  .salida button.principal{width:100%;background:var(--ambar);color:#101A0C;border:0;
-    padding:15px 20px;font-size:1rem;font-family:var(--sans);font-weight:600;cursor:pointer;
+  .salida a.principal{display:block;background:var(--ambar);color:#101A0C;text-decoration:none;
+    padding:15px 20px;font-size:1rem;font-family:var(--sans);font-weight:600;
     transition:background .15s}
-  .salida button.principal:hover{background:var(--ambar-cl)}
+  .salida a.principal:hover{background:var(--ambar-cl)}
+  .salida .cuanto{font-size:.82rem;color:var(--texto2);margin:12px 0 0;max-width:none}
   .salida .nogracias{display:inline-block;margin-top:14px;background:none;border:0;
     color:var(--texto2);font-size:.87rem;font-family:var(--sans);cursor:pointer;
     text-decoration:underline;text-underline-offset:3px;padding:4px}
@@ -379,7 +380,7 @@
        conector funciona igual si decides no hacerlo.</p>
 
     <div class="montos">
-      <a class="monto destacado" href="https://donate.stripe.com/8x2fZh57U3Ut2C5eTVgjC01">$49 MXN</a>
+      <a class="monto" href="https://donate.stripe.com/8x2fZh57U3Ut2C5eTVgjC01">$49 MXN</a>
       <a class="monto" href="https://donate.stripe.com/5kQcN5eIu2QpfoR8vxgjC02">$199 MXN</a>
       <a class="monto" href="https://donate.stripe.com/aFa5kD57U3Uta4x4fhgjC03">$499 MXN</a>
       <a class="monto" href="https://donate.stripe.com/aFa14n9oa8aJ5OhdPRgjC04">Otra cantidad</a>
@@ -395,8 +396,9 @@
     </div>
 
     <div class="salida">
-      <button class="principal" id="copiar-modal">Copiar la dirección del conector</button>
-      <br><button class="nogracias" id="no">Seguir sin aportar</button>
+      <a class="principal" id="aportar" href="https://donate.stripe.com/8x2fZh57U3Ut2C5eTVgjC01">Aportar</a>
+      <p class="cuanto">Son $49 MXN, una sola vez. Para otra cantidad, elígela arriba.</p>
+      <button class="nogracias" id="no">Seguir sin aportar</button>
     </div>
   </div>
 </div>
@@ -417,7 +419,7 @@
       caja=modal.querySelector('.caja'),
       url=document.getElementById('u'),
       botonPagina=document.getElementById('b'),
-      botonModal=document.getElementById('copiar-modal'),
+      aportar=document.getElementById('aportar'),
       previo=null;
 
   /* Copiado con respaldo: navigator.clipboard exige contexto seguro y en algunos
@@ -452,7 +454,7 @@
     previo=document.activeElement;
     modal.hidden=false;
     document.body.classList.add('quieto');
-    setTimeout(function(){ botonModal.focus(); },30);
+    setTimeout(function(){ aportar.focus(); },30);
   }
 
   function cerrar(){
@@ -461,20 +463,18 @@
     if(previo && previo.focus) previo.focus();
   }
 
-  /* La dirección se copia desde la ventana; el botón de la página la vuelve a abrir,
-     así toda ruta hacia el link pasa por aquí. */
-  botonModal.addEventListener('click',function(){
-    var t='Copiar la dirección del conector';
+  /* La ventana ya se mostró al entrar, así que el botón de la página copia directo.
+     Si lo volviera a abrir, quien cerró la ventana nunca podría llevarse la dirección. */
+  botonPagina.addEventListener('click',function(){
+    var t='Copiar';
     alPortapapeles(url.textContent.trim()).then(function(){
-      avisar(botonModal,t);
-      setTimeout(cerrar,900);
+      avisar(botonPagina,t);
     },function(){
-      cerrar(); seleccionarUrl();
+      seleccionarUrl();
       botonPagina.textContent='Cópiala a mano';
+      setTimeout(function(){ botonPagina.textContent=t; },2600);
     });
   });
-
-  botonPagina.addEventListener('click',abrir);
   document.getElementById('x').addEventListener('click',cerrar);
   document.getElementById('no').addEventListener('click',cerrar);
   modal.addEventListener('mousedown',function(e){ if(e.target===modal) cerrar(); });
