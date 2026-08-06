@@ -119,6 +119,43 @@
   footer{padding:40px 0 54px;font-size:.83rem;color:var(--texto2)}
   footer p{margin-bottom:11px;max-width:none;color:var(--texto2)}
 
+  /* Ventana de aportación. Nace oculta y solo la abre el script, para que sin
+     JavaScript la página siga sirviendo con normalidad. */
+  .telon-modal[hidden]{display:none}
+  .telon-modal{position:fixed;inset:0;z-index:50;background:rgba(8,14,6,.82);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+    overflow-y:auto;animation:aparece .18s ease-out}
+  @keyframes aparece{from{opacity:0}to{opacity:1}}
+  @keyframes sube{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .caja{background:var(--sup);border:1px solid var(--verde);max-width:470px;width:100%;
+    padding:34px 34px 28px;position:relative;margin:auto;animation:sube .22s ease-out}
+  .caja .vers{display:block;margin-bottom:12px}
+  .caja h2{font-size:1.42rem;margin-bottom:14px}
+  .caja p{color:var(--texto2);font-size:.93rem;max-width:none;margin-bottom:13px}
+  .caja .montos{margin:20px 0 14px}
+  .caja .mensual{margin:18px 0 0}
+  .cerrar{position:absolute;top:12px;right:14px;background:none;border:0;color:var(--texto2);
+    font-size:1.5rem;line-height:1;cursor:pointer;padding:6px 8px;font-family:var(--sans)}
+  .cerrar:hover{color:var(--ambar-cl)}
+  .salida{border-top:1px solid var(--borde);margin-top:24px;padding-top:22px;text-align:center}
+  .salida button.principal{width:100%;background:var(--ambar);color:#101A0C;border:0;
+    padding:15px 20px;font-size:1rem;font-family:var(--sans);font-weight:600;cursor:pointer;
+    transition:background .15s}
+  .salida button.principal:hover{background:var(--ambar-cl)}
+  .salida .nogracias{display:inline-block;margin-top:14px;background:none;border:0;
+    color:var(--texto2);font-size:.87rem;font-family:var(--sans);cursor:pointer;
+    text-decoration:underline;text-underline-offset:3px;padding:4px}
+  .salida .nogracias:hover{color:var(--ambar-cl)}
+  body.quieto{overflow:hidden}
+
+  @media(max-width:640px){
+    .telon-modal{padding:0;align-items:flex-start}
+    .caja{padding:30px 22px 24px;border-left:0;border-right:0;min-height:100%}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .telon-modal,.caja{animation:none}
+  }
+
   @media(max-width:900px){
     .columnas{grid-template-columns:1fr;gap:0;padding:0}
     .columnas main{padding:48px 26px}
@@ -232,7 +269,7 @@
         <h3>Copia la dirección</h3>
         <div class="url">
           <code id="u">https://mcp.kriterius.mx/mcp</code>
-          <button onclick="copiar()" id="b">Copiar</button>
+          <button type="button" id="b">Copiar</button>
         </div>
         <p>Es lo único que vas a necesitar. Guárdala si después quieres conectarlo
            en otro dispositivo.</p>
@@ -331,6 +368,39 @@
 </aside>
 </div>
 
+<div class="telon-modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+  <div class="caja">
+    <button class="cerrar" id="x" aria-label="Cerrar">&times;</button>
+    <span class="vers">Es gratis y así se queda</span>
+    <h2 id="modal-titulo">Ayúdame a mantenerlo encendido</h2>
+    <p>El servidor donde vive KriteriusMX se paga todos los meses y sale de mi bolsillo.
+       No hay anuncios ni planes de paga.</p>
+    <p>Si te sirve, puedes aportar antes de llevarte la dirección. Es voluntario y el
+       conector funciona igual si decides no hacerlo.</p>
+
+    <div class="montos">
+      <a class="monto destacado" href="https://donate.stripe.com/8x2fZh57U3Ut2C5eTVgjC01">$49 MXN</a>
+      <a class="monto" href="https://donate.stripe.com/5kQcN5eIu2QpfoR8vxgjC02">$199 MXN</a>
+      <a class="monto" href="https://donate.stripe.com/aFa5kD57U3Uta4x4fhgjC03">$499 MXN</a>
+      <a class="monto" href="https://donate.stripe.com/aFa14n9oa8aJ5OhdPRgjC04">Otra cantidad</a>
+    </div>
+    <p class="chico">Se cobran una sola vez. La opción de otra cantidad va en dólares y
+       arranca desde 2 USD, sin tope.</p>
+
+    <div class="mensual">
+      <h3>O apóyalo cada mes</h3>
+      <p class="ojo">Hay una opción de <strong>$25 pesos mensuales</strong>. Este sí es un
+         cargo recurrente: se cobra cada mes hasta que lo canceles.</p>
+      <a class="monto" href="https://donate.stripe.com/5kQfZh0RE9eNb8BbHJgjC00">$25 al mes</a>
+    </div>
+
+    <div class="salida">
+      <button class="principal" id="copiar-modal">Copiar la dirección del conector</button>
+      <br><button class="nogracias" id="no">Seguir sin aportar</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
     <p>KriteriusMX no está afiliado ni patrocinado por la SCJN, el TFJA, la Segob o la Corte
@@ -342,13 +412,87 @@
 </footer>
 
 <script>
-function copiar(){
-  var u=document.getElementById('u').textContent.trim(), b=document.getElementById('b');
-  navigator.clipboard.writeText(u).then(function(){
-    var t=b.textContent; b.textContent='Copiado';
-    setTimeout(function(){b.textContent=t},1800);
+(function(){
+  var modal=document.getElementById('modal'),
+      caja=modal.querySelector('.caja'),
+      url=document.getElementById('u'),
+      botonPagina=document.getElementById('b'),
+      botonModal=document.getElementById('copiar-modal'),
+      previo=null;
+
+  /* Copiado con respaldo: navigator.clipboard exige contexto seguro y en algunos
+     navegadores viejos no existe. Si falla, se selecciona el texto para que la
+     persona lo copie a mano en vez de quedarse sin nada. */
+  function alPortapapeles(texto){
+    if(navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(texto);
+    }
+    return new Promise(function(cumple,falla){
+      var a=document.createElement('textarea');
+      a.value=texto; a.setAttribute('readonly','');
+      a.style.position='fixed'; a.style.top='-1000px';
+      document.body.appendChild(a); a.select();
+      try{ document.execCommand('copy') ? cumple() : falla(); }
+      catch(e){ falla(e); }
+      finally{ document.body.removeChild(a); }
+    });
+  }
+
+  function avisar(boton, textoOriginal){
+    boton.textContent='Copiado';
+    setTimeout(function(){ boton.textContent=textoOriginal; },1800);
+  }
+
+  function seleccionarUrl(){
+    var r=document.createRange(); r.selectNodeContents(url);
+    var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+
+  function abrir(){
+    previo=document.activeElement;
+    modal.hidden=false;
+    document.body.classList.add('quieto');
+    setTimeout(function(){ botonModal.focus(); },30);
+  }
+
+  function cerrar(){
+    modal.hidden=true;
+    document.body.classList.remove('quieto');
+    if(previo && previo.focus) previo.focus();
+  }
+
+  /* La dirección se copia desde la ventana; el botón de la página la vuelve a abrir,
+     así toda ruta hacia el link pasa por aquí. */
+  botonModal.addEventListener('click',function(){
+    var t='Copiar la dirección del conector';
+    alPortapapeles(url.textContent.trim()).then(function(){
+      avisar(botonModal,t);
+      setTimeout(cerrar,900);
+    },function(){
+      cerrar(); seleccionarUrl();
+      botonPagina.textContent='Cópiala a mano';
+    });
   });
-}
+
+  botonPagina.addEventListener('click',abrir);
+  document.getElementById('x').addEventListener('click',cerrar);
+  document.getElementById('no').addEventListener('click',cerrar);
+  modal.addEventListener('mousedown',function(e){ if(e.target===modal) cerrar(); });
+
+  document.addEventListener('keydown',function(e){
+    if(modal.hidden) return;
+    if(e.key==='Escape'){ cerrar(); return; }
+    if(e.key!=='Tab') return;
+    /* El tabulador se queda dentro de la ventana mientras está abierta */
+    var f=caja.querySelectorAll('a[href],button');
+    if(!f.length) return;
+    var primero=f[0], ultimo=f[f.length-1];
+    if(e.shiftKey && document.activeElement===primero){ e.preventDefault(); ultimo.focus(); }
+    else if(!e.shiftKey && document.activeElement===ultimo){ e.preventDefault(); primero.focus(); }
+  });
+
+  abrir();
+})();
 </script>
 
 </body>
