@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Conectar KriteriusMX en dos minutos</title>
-<meta name="description" content="Cómo agregar KriteriusMX a Claude: copias una dirección, la pegas en Conectores y listo.">
+<title>Conectar KriteriusMX en ChatGPT</title>
+<meta name="description" content="Cómo agregar KriteriusMX a ChatGPT: activas el modo desarrollador, pegas una dirección y listo.">
 <meta name="theme-color" content="#101A0C">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
@@ -13,16 +13,16 @@
 <meta property="og:site_name" content="KriteriusMX">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_MX">
-<meta property="og:url" content="https://www.kriterius.mx/instalacion.html">
-<meta property="og:title" content="Conectar KriteriusMX">
-<meta property="og:description" content="Copias una direccion y la pegas en Claude. Dos minutos, sin instalar nada.">
+<meta property="og:url" content="https://www.kriterius.mx/chatgpt.html">
+<meta property="og:title" content="Conectar KriteriusMX en ChatGPT">
+<meta property="og:description" content="Activas el modo desarrollador, pegas una direccion y listo. Cinco minutos, sin instalar nada.">
 <meta property="og:image" content="https://www.kriterius.mx/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="KriteriusMX. Le pides a Claude una tesis y te la encuentra directo desde la fuente oficial.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Conectar KriteriusMX">
-<meta name="twitter:description" content="Copias una direccion y la pegas en Claude. Dos minutos, sin instalar nada.">
+<meta name="twitter:title" content="Conectar KriteriusMX en ChatGPT">
+<meta name="twitter:description" content="Activas el modo desarrollador, pegas una direccion y listo. Cinco minutos, sin instalar nada.">
 <meta name="twitter:image" content="https://www.kriterius.mx/og.png">
 <style>
   :root{
@@ -33,7 +33,6 @@
     --serif:"Palatino Linotype","Book Antiqua",Palatino,"URW Palladio L",serif;
     --sans:"Avenir Next",Avenir,"Helvetica Neue",Helvetica,Arial,sans-serif;
   }
-  /* Telón de fondo: biblioteca insinuada, fija detrás de todo */
   .telon{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
   .telon svg{width:100%;height:100%;display:block}
   .telon .tinta{fill:#8FBF7A;stroke:#8FBF7A;opacity:.052}
@@ -71,6 +70,8 @@
     justify-content:center;background:var(--sup)}
   .paso p{margin-bottom:11px}
   .paso p:last-child{margin-bottom:0}
+  .paso ol,.paso ul{margin:0 0 12px 20px;color:var(--texto)}
+  .paso li{margin-bottom:7px}
 
   .url{display:flex;gap:10px;align-items:stretch;margin:16px 0;flex-wrap:wrap}
   .url code{flex:1;min-width:250px;background:rgba(24,35,18,.86);border:1px solid var(--verde);
@@ -87,9 +88,27 @@
   .tip.verde{border-left-color:var(--verde)}
   .tip.verde em{color:var(--ambar-cl);font-style:normal}
 
+  .campos{width:100%;border-collapse:collapse;margin:16px 0;font-size:.93rem}
+  .campos th,.campos td{border:1px solid var(--borde);padding:10px 13px;text-align:left;
+    vertical-align:top}
+  .campos th{background:rgba(31,44,24,.7);color:#EFE7D8;font-weight:600;white-space:nowrap}
+  .campos td{color:var(--texto2)}
+  .campos code{color:var(--ambar-cl);font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:.88rem;word-break:break-all}
+
+  .prompt{background:rgba(16,26,12,.7);border:1px solid var(--borde);padding:16px 18px;
+    margin:16px 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86rem;
+    line-height:1.6;color:var(--texto);white-space:pre-wrap;overflow-wrap:break-word}
+
   .probar{background:rgba(24,35,18,.86);border:1px solid var(--borde);padding:24px 26px;margin:18px 0}
   .probar ul{margin:14px 0 0 20px;font-size:.95rem;color:var(--texto2)}
   .probar li{margin-bottom:10px}
+
+  .falla{border-top:1px solid var(--borde);padding-top:20px;margin-top:26px}
+  .falla h3{margin-bottom:10px}
+  .falla p{font-size:.95rem}
+  .falla ul{margin:0 0 8px 20px;font-size:.95rem;color:var(--texto2)}
+  .falla li{margin-bottom:6px}
 
   .columnas{display:grid;grid-template-columns:1fr 340px;gap:44px;align-items:start;
     max-width:1120px;margin:0 auto;padding:0 26px}
@@ -119,8 +138,6 @@
   footer{padding:40px 0 54px;font-size:.83rem;color:var(--texto2)}
   footer p{margin-bottom:11px;max-width:none;color:var(--texto2)}
 
-  /* Ventana de aportación. Nace oculta y solo la abre el script, para que sin
-     JavaScript la página siga sirviendo con normalidad. */
   .telon-modal[hidden]{display:none}
   .telon-modal{position:fixed;inset:0;z-index:50;background:rgba(8,14,6,.82);
     display:flex;align-items:center;justify-content:center;padding:24px;
@@ -149,14 +166,6 @@
   .salida .nogracias:hover{color:var(--ambar-cl)}
   body.quieto{overflow:hidden}
 
-  @media(max-width:640px){
-    .telon-modal{padding:0;align-items:flex-start}
-    .caja{padding:30px 22px 24px;border-left:0;border-right:0;min-height:100%}
-  }
-  @media(prefers-reduced-motion:reduce){
-    .telon-modal,.caja{animation:none}
-  }
-
   @media(max-width:900px){
     .columnas{grid-template-columns:1fr;gap:0;padding:0}
     .columnas main{padding:48px 26px}
@@ -166,6 +175,12 @@
   @media(max-width:640px){
     .paso{grid-template-columns:34px 1fr;gap:15px}
     .num{width:34px;height:34px;font-size:1rem}
+    .telon-modal{padding:0;align-items:flex-start}
+    .caja{padding:30px 22px 24px;border-left:0;border-right:0;min-height:100%}
+    .campos th,.campos td{padding:8px 10px;font-size:.87rem}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .telon-modal,.caja{animation:none}
   }
 </style>
 </head>
@@ -181,7 +196,6 @@
       </pattern>
     </defs>
     <g class="tinta">
-      <!-- balaustrada superior -->
       <rect x="0" y="150" width="1200" height="5"/>
       <rect x="0" y="176" width="1200" height="3"/>
       <g>
@@ -196,16 +210,13 @@
         <rect x="990" y="155" width="3" height="21"/><rect x="1050" y="155" width="3" height="21"/>
         <rect x="1110" y="155" width="3" height="21"/><rect x="1170" y="155" width="3" height="21"/>
       </g>
-      <!-- columnas -->
       <rect x="86"   y="180" width="16" height="640"/><rect x="386" y="180" width="16" height="640"/>
       <rect x="686"  y="180" width="16" height="640"/><rect x="986" y="180" width="16" height="640"/>
       <rect x="80"   y="180" width="28" height="12"/><rect x="380" y="180" width="28" height="12"/>
       <rect x="680"  y="180" width="28" height="12"/><rect x="980" y="180" width="28" height="12"/>
-      <!-- arcos -->
       <path d="M102 330 Q 244 214 386 330" fill="none" stroke-width="7"/>
       <path d="M402 330 Q 544 214 686 330" fill="none" stroke-width="7"/>
       <path d="M702 330 Q 844 214 986 330" fill="none" stroke-width="7"/>
-      <!-- estantes con libros -->
       <g>
         <rect x="112" y="340" width="264" height="30" fill="url(#libros)"/>
         <rect x="112" y="380" width="264" height="30" fill="url(#libros)"/>
@@ -223,9 +234,7 @@
       <rect x="408" y="452" width="272" height="3"/>
       <rect x="708" y="372" width="272" height="3"/><rect x="708" y="412" width="272" height="3"/>
       <rect x="708" y="452" width="272" height="3"/>
-      <!-- entrepiso -->
       <rect x="0" y="486" width="1200" height="6"/>
-      <!-- nivel inferior -->
       <g>
         <rect x="112" y="520" width="264" height="30" fill="url(#libros)"/>
         <rect x="112" y="562" width="264" height="30" fill="url(#libros)"/>
@@ -236,7 +245,6 @@
       <rect x="108" y="554" width="272" height="3"/><rect x="108" y="596" width="272" height="3"/>
       <rect x="408" y="554" width="272" height="3"/>
       <rect x="708" y="554" width="272" height="3"/><rect x="708" y="596" width="272" height="3"/>
-      <!-- portada central -->
       <path d="M470 700 L470 600 Q 544 545 618 600 L618 700" fill="none" stroke-width="8"/>
       <rect x="466" y="700" width="156" height="120"/>
     </g>
@@ -247,9 +255,9 @@
 <header>
   <div class="wrap">
     <div class="top"><a href="index.html">← KriteriusMX</a></div>
-    <h1>Conectar KriteriusMX</h1>
-    <p>Copias una dirección y la pegas en Claude. No hay programas que instalar
-       ni cuentas nuevas que abrir.</p>
+    <h1>Conectar KriteriusMX en ChatGPT</h1>
+    <p>Activas una opción escondida, pegas una dirección y ya. Toma unos cinco minutos
+       y no hay nada que instalar.</p>
   </div>
 </header>
 
@@ -259,10 +267,12 @@
 
     <div class="req">
       <p><strong>Lo que hace falta</strong></p>
-      <p>Una cuenta de Claude. Funciona igual en el navegador, en la app de escritorio
-         y en el celular.</p>
-      <p>Que tu plan permita agregar conectores. En los planes de paga aparece la opción.</p>
-      <p>¿Usas ChatGPT? Los pasos son otros y toman un poco más, <a href="chatgpt.html">van
+      <p>Una cuenta de ChatGPT y un navegador. Hazlo desde una computadora: en la
+         aplicación del celular no aparecen estas opciones.</p>
+      <p>Que tu plan permita conectar servidores externos. Está disponible en los planes
+         Plus, Pro, Business, Enterprise y Education, aunque si tu cuenta pertenece a una
+         organización, el administrador puede tenerlo apagado.</p>
+      <p>¿Usas Claude? Los pasos son otros y más cortos, <a href="instalacion.html">van
          aquí</a>.</p>
     </div>
 
@@ -274,64 +284,174 @@
           <code id="u">https://mcp.kriterius.mx/mcp</code>
           <button type="button" id="b">Copiar</button>
         </div>
-        <p>Es lo único que vas a necesitar. Guárdala si después quieres conectarlo
-           en otro dispositivo.</p>
+        <p>Tiene que ir completa, con el <code>https://</code> del principio y el
+           <code>/mcp</code> del final. Sin espacios sobrantes al pegarla.</p>
       </div>
     </div>
 
     <div class="paso">
       <div class="num">2</div>
       <div>
-        <h3>Abre los ajustes de conectores</h3>
-        <p>En <a href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">claude.ai</a>
-           entra a <strong>Settings → Connectors</strong>. Hasta abajo de la lista está el botón
-           <strong>Add custom connector</strong>.</p>
+        <h3>Activa el modo desarrollador</h3>
+        <p>Entra a <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a>
+           desde el navegador e inicia sesión. Luego:</p>
+        <ol>
+          <li>Pica tu foto de perfil</li>
+          <li>Entra a <strong>Settings</strong> o <strong>Configuración</strong></li>
+          <li>Abre <strong>Security and login</strong> o <strong>Seguridad e inicio de sesión</strong></li>
+          <li>Busca <strong>Developer mode</strong> o <strong>Modo desarrollador</strong></li>
+          <li>Enciende el interruptor</li>
+        </ol>
+        <div class="tip">
+          <p><strong>Te va a salir una advertencia de seguridad.</strong> Es normal y hay que
+             aceptarla. ChatGPT la muestra porque un servidor externo puede hacer cosas en tu
+             nombre. KriteriusMX solo lee información pública de portales de gobierno, no
+             escribe ni modifica nada.</p>
+        </div>
       </div>
     </div>
 
     <div class="paso">
       <div class="num">3</div>
       <div>
-        <h3>Pega la dirección</h3>
-        <p>En <strong>Name</strong> escribe KriteriusMX. En <strong>URL</strong> pega lo que
-           copiaste. Le das <strong>Add</strong> y ya.</p>
-        <div class="tip">
-          <p><strong>Si te pide un OAuth Client ID, déjalo vacío.</strong> KriteriusMX no maneja
-             contraseñas ni inicio de sesión. Consulta información pública y no guarda datos tuyos.</p>
-        </div>
+        <h3>Crea la conexión</h3>
+        <p>Abre la sección de <a href="https://chatgpt.com/plugins" target="_blank" rel="noopener">plugins</a>,
+           pica el botón <strong>+</strong> y elige la opción de crear una conexión con un
+           servidor MCP. Llena los campos así:</p>
+        <table class="campos">
+          <tr><th>Name</th><td><code>KriteriusMX</code></td></tr>
+          <tr><th>Description</th><td>Herramienta para buscar y consultar legislación,
+              jurisprudencia y criterios jurídicos mexicanos.</td></tr>
+          <tr><th>Connection</th><td>Endpoint público o URL</td></tr>
+          <tr><th>MCP Server URL</th><td><code>https://mcp.kriterius.mx/mcp</code></td></tr>
+        </table>
+        <p>Pica <strong>Create</strong>, <strong>Connect</strong> o <strong>Crear conexión</strong>,
+           según lo que te aparezca.</p>
       </div>
     </div>
 
     <div class="paso">
       <div class="num">4</div>
       <div>
-        <h3>Compruébalo</h3>
-        <p>Abre una conversación nueva y escríbele:</p>
-        <div class="tip verde"><p><em>Corre diagnosticar_conector</em></p></div>
-        <p>Te va a devolver un reporte de las cuatro fuentes. Si salen en orden, quedó listo.</p>
+        <h3>Revisa que haya leído las herramientas</h3>
+        <p>ChatGPT se comunica con el servidor y lee lo que ofrece. Si todo salió bien vas a
+           ver una lista con las herramientas, entre ellas <strong>buscar_tesis</strong>,
+           <strong>buscar_ejecutorias</strong> y <strong>buscar_corteidh</strong>.</p>
+        <p>Guarda la configuración y vuelve a abrir la ficha de KriteriusMX. Si aparece un
+           botón <strong>Install</strong> o un <strong>+</strong>, pícalo. Crear la conexión e
+           instalarla pueden ser dos pasos separados, así que no te saltes este.</p>
       </div>
     </div>
 
-    <h2 style="margin-top:50px">Qué pedirle</h2>
+    <div class="paso">
+      <div class="num">5</div>
+      <div>
+        <h3>Úsalo en una conversación</h3>
+        <p>Vuelve a la página principal, abre una conversación nueva y escribe
+           <strong>@</strong> en el cuadro del mensaje. Elige <strong>KriteriusMX</strong> y
+           escribe tu consulta después. Si arriba te aparece la modalidad
+           <strong>Work</strong>, selecciónala.</p>
+        <p>También puedes activarlo desde el menú <strong>+</strong> del cuadro de texto,
+           entrando a <strong>More</strong> o <strong>Más</strong>.</p>
+        <div class="tip verde">
+          <p><em>@KriteriusMX Busca jurisprudencia mexicana sobre actos de particulares
+             equivalentes a actos de autoridad para efectos del juicio de amparo.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:50px">Comprueba que de verdad lo usó</h2>
+    <p>Que ChatGPT conteste algo jurídico no significa que haya consultado KriteriusMX.
+       Puede estar respondiendo de memoria, que es justo lo que produce tesis inventadas.
+       Fíjate en tres señales: que KriteriusMX aparezca seleccionado en la conversación,
+       que durante la respuesta se muestre una llamada a la herramienta, y que al
+       desplegarla veas los parámetros que mandó y lo que recibió.</p>
+    <p>Para salir de dudas, pégale esto:</p>
+    <div class="prompt">Usa exclusivamente KriteriusMX. No uses búsqueda web ni respondas con tu conocimiento general.
+
+Busca jurisprudencia mexicana sobre actos de particulares equivalentes a actos de autoridad para efectos del juicio de amparo.
+
+Para cada resultado devuelve:
+1. Registro digital
+2. Rubro exacto
+3. Órgano emisor
+4. Época
+5. Tipo de criterio
+6. Fuente y fecha de publicación
+7. Extracto relevante
+8. Enlace verificable
+
+Si KriteriusMX no encuentra resultados, dilo expresamente. No inventes registros, rubros ni enlaces.</div>
+
+    <h2 style="margin-top:46px">En cada conversación nueva hay que llamarlo</h2>
+    <p>Instalarlo no basta. ChatGPT no lo va a usar solo: en cada chat nuevo tienes que
+       escribir <strong>@KriteriusMX</strong> y seleccionarlo, o activarlo desde el menú
+       <strong>+</strong>. Si quieres asegurarte de que no se vaya por otro lado, empieza tu
+       petición con <em>Usa exclusivamente KriteriusMX</em>.</p>
+
+    <h2 style="margin-top:46px">Qué pedirle</h2>
     <p>Háblale en español, como le dictarías algo a un pasante muy rápido.</p>
     <div class="probar">
       <ul>
         <li>¿Qué ha dicho la Corte sobre interés legítimo en materia ambiental?</li>
         <li>Busca jurisprudencia del Pleno sobre prisión preventiva oficiosa.</li>
+        <li>¿Qué resolvió la Corte en la controversia constitucional 267/2024?</li>
         <li>¿Qué dice la Corte Interamericana sobre desaparición forzada como delito continuado?</li>
         <li>Dame el texto íntegro de la tesis con registro 2012594.</li>
         <li>¿Publicaron algo en el DOF esta semana sobre protección de datos?</li>
-        <li>Avísame cada mañana si el DOF publica algo sobre outsourcing.</li>
       </ul>
     </div>
     <p>Antes de citar algo en un escrito, abre la liga que viene con el criterio y léelo en
        la fuente. Es tu firma la que va en el documento.</p>
 
     <h2 style="margin-top:46px">Si algo falla</h2>
-    <p>Pídele que corra <strong>estado_conector</strong>. Contesta de inmediato y sin salir a
-       internet, así que si responde, el conector está bien y lo que anda lento es el portal
-       de gobierno. Cuando no conteste, quita el conector y vuelve a agregarlo con los pasos
-       de arriba.</p>
+
+    <div class="falla">
+      <h3>No aparece el modo desarrollador</h3>
+      <ul>
+        <li>Revisa que estés en ChatGPT desde el navegador y no en la app del celular</li>
+        <li>Confirma que tu plan lo incluya</li>
+        <li>Asegúrate de estar en Settings, sección de seguridad e inicio de sesión</li>
+        <li>Si tu cuenta es de una empresa, puede que el administrador lo tenga bloqueado</li>
+      </ul>
+    </div>
+
+    <div class="falla">
+      <h3>Dice que no puede conectarse</h3>
+      <p>Casi siempre es la dirección. Verifica que la hayas copiado completa, que empiece
+         con <code>https://</code>, que termine en <code>/mcp</code> y que no tenga espacios
+         al principio ni al final. No sirve pegar solo el dominio.</p>
+    </div>
+
+    <div class="falla">
+      <h3>La conexión existe pero no aparece en el chat</h3>
+      <p>Entra a tus plugins personales, abre KriteriusMX y confirma que esté instalado y
+         habilitado. Luego abre una conversación nueva y escribe <strong>@KriteriusMX</strong>.
+         En conversaciones que ya estaban abiertas puede no aparecer.</p>
+    </div>
+
+    <div class="falla">
+      <h3>Aparece pero ChatGPT no lo usa</h3>
+      <p>Invócalo de frente: <em>@KriteriusMX Usa exclusivamente las herramientas de
+         KriteriusMX para esta consulta. No uses búsqueda web.</em></p>
+    </div>
+
+    <div class="falla">
+      <h3>Faltan herramientas que sí existen</h3>
+      <p>ChatGPT se queda con la lista que leyó el día que lo conectaste. Cuando
+         KriteriusMX suma herramientas nuevas, tu cuenta no se entera sola. Abre la
+         configuración de KriteriusMX, pica <strong>Refresh</strong> o
+         <strong>Actualizar</strong>, revisa que aparezcan las nuevas y abre una conversación
+         nueva.</p>
+    </div>
+
+    <div class="falla">
+      <h3>Sigue sin funcionar</h3>
+      <p>Antes de pelearte con la configuración, pídele que corra
+         <strong>estado_conector</strong>. Contesta de inmediato y sin salir a internet, así
+         que si responde, el servidor está bien y el problema está de tu lado. Si no
+         responde nada, escríbeme.</p>
+    </div>
 
   </div>
 </main>
@@ -424,9 +544,6 @@
       aportar=document.getElementById('aportar'),
       previo=null;
 
-  /* Copiado con respaldo: navigator.clipboard exige contexto seguro y en algunos
-     navegadores viejos no existe. Si falla, se selecciona el texto para que la
-     persona lo copie a mano en vez de quedarse sin nada. */
   function alPortapapeles(texto){
     if(navigator.clipboard && window.isSecureContext){
       return navigator.clipboard.writeText(texto);
@@ -465,8 +582,6 @@
     if(previo && previo.focus) previo.focus();
   }
 
-  /* La ventana ya se mostró al entrar, así que el botón de la página copia directo.
-     Si lo volviera a abrir, quien cerró la ventana nunca podría llevarse la dirección. */
   botonPagina.addEventListener('click',function(){
     var t='Copiar';
     alPortapapeles(url.textContent.trim()).then(function(){
@@ -477,6 +592,7 @@
       setTimeout(function(){ botonPagina.textContent=t; },2600);
     });
   });
+
   document.getElementById('x').addEventListener('click',cerrar);
   document.getElementById('no').addEventListener('click',cerrar);
   modal.addEventListener('mousedown',function(e){ if(e.target===modal) cerrar(); });
@@ -485,7 +601,6 @@
     if(modal.hidden) return;
     if(e.key==='Escape'){ cerrar(); return; }
     if(e.key!=='Tab') return;
-    /* El tabulador se queda dentro de la ventana mientras está abierta */
     var f=caja.querySelectorAll('a[href],button');
     if(!f.length) return;
     var primero=f[0], ultimo=f[f.length-1];
@@ -496,13 +611,6 @@
   abrir();
 })();
 </script>
-
-<!-- Faro de visitas. Cuenta cargas de esta página en el servidor del conector, para
-     saber cuántos llegan aquí contra cuántos terminan conectando. No usa cookies, no
-     usa JavaScript y no guarda IP ni user-agent: solo suma uno. Si el navegador lo
-     bloquea, no se rompe nada. -->
-<img src="https://mcp.kriterius.mx/visita?p=instalacion" alt="" width="1" height="1"
-     style="position:absolute;left:-9999px" aria-hidden="true">
 
 </body>
 </html>
