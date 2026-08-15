@@ -65,6 +65,25 @@
   .cta:hover{background:var(--ambar-cl);box-shadow:0 0 22px rgba(235,163,69,.32)}
   .nota-cta{font-size:.88rem;color:var(--texto2);margin-top:14px}
 
+  /* Dos caminos */
+  .caminos{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0 8px}
+  .camino{border:1px solid var(--borde);border-radius:3px;padding:26px 24px 28px;
+    background:var(--sup,rgba(255,255,255,.015));display:flex;flex-direction:column}
+  /* El de pago lleva el borde ámbar: sin una diferencia visual, dos tarjetas
+     iguales obligan a leerlas enteras para decidir. */
+  .camino.destacado{border-color:var(--ambar);box-shadow:0 0 24px rgba(210,136,44,.07)}
+  .camino .etiqueta{text-transform:uppercase;letter-spacing:.14em;font-size:.68rem;
+    color:var(--verde-cl);margin-bottom:12px;display:block}
+  .camino.destacado .etiqueta{color:var(--ambar)}
+  .camino h3{font-family:var(--serif);font-size:1.2rem;margin:0 0 10px}
+  .camino p{color:var(--texto2);font-size:.94rem;margin:0 0 22px;flex:1}
+  .camino .cta,.camino .cta-sec{align-self:flex-start}
+  .cta-sec{display:inline-block;border:1px solid var(--borde);color:var(--texto);
+    text-decoration:none;font-weight:600;padding:13px 28px;border-radius:2px;
+    font-size:.95rem;transition:border-color .15s,background .15s}
+  .cta-sec:hover{border-color:var(--verde-cl);background:rgba(143,191,122,.05)}
+  @media(max-width:700px){.caminos{grid-template-columns:1fr}}
+
   section{padding:70px 0;border-bottom:1px solid var(--borde)}
   h2{font-family:var(--serif);font-size:clamp(1.6rem,3.6vw,2.1rem);line-height:1.3;
     margin-bottom:22px;color:#EFE7D8;font-weight:700}
@@ -211,6 +230,36 @@
        También funciona en <a href="chatgpt.html">ChatGPT</a>.</p>
   </div>
 </header>
+
+<!-- Dos caminos. Hasta ahora el sitio solo hablaba con quien ya paga Claude o
+     ChatGPT; quien no tiene ninguno leía todo y se quedaba sin qué hacer. -->
+<section id="caminos">
+  <div class="wrap">
+    <span class="vers eyebrow">Dos formas de usarlo</span>
+    <h2>Según lo que ya tengas</h2>
+
+    <div class="caminos">
+      <div class="camino">
+        <span class="etiqueta">Gratis · Código abierto</span>
+        <h3>Ya uso Claude o ChatGPT</h3>
+        <p>Conectas KriteriusMX a la cuenta que ya pagas y le preguntas desde la
+           conversación donde estás. Sin costo adicional, sin tarjeta.</p>
+        <a href="instalacion.html" class="cta-sec">Conectar el buscador</a>
+      </div>
+
+      <div class="camino destacado">
+        <span class="etiqueta">Aplicación propia</span>
+        <h3>No tengo ninguna suscripción</h3>
+        <p>Un espacio de investigación jurídica que no necesita nada más. Pagas
+           solo lo que consultas, con créditos que no caducan.</p>
+        <a href="https://app.kriterius.mx" class="cta">Entrar a la aplicación</a>
+      </div>
+    </div>
+
+    <p class="nota-cta">Las dos consultan las mismas fuentes oficiales y entregan
+       cada criterio con su cita completa y su liga.</p>
+  </div>
+</section>
 
 <section id="que-es">
   <div class="wrap">
