@@ -85,6 +85,7 @@
   .tip p{margin-bottom:0}
   .tip strong{color:#EFE7D8;font-weight:600}
   .tip.verde{border-left-color:var(--verde)}
+  .opc{color:var(--texto2);font-size:.86rem}
   .tip.verde em{color:var(--ambar-cl);font-style:normal}
 
   .probar{background:rgba(24,35,18,.86);border:1px solid var(--borde);padding:24px 26px;margin:18px 0}
@@ -308,9 +309,26 @@
         <h3>Compruébalo</h3>
         <p>Abre una conversación nueva y escríbele:</p>
         <div class="tip verde"><p><em>Corre diagnosticar_conector</em></p></div>
-        <p>Te va a devolver un reporte de las cuatro fuentes. Si salen en orden, quedó listo.</p>
+        <p>Te va a devolver un reporte de las cuatro fuentes mexicanas e interamericanas.
+           Si salen en orden, quedó listo.</p>
       </div>
     </div>
+
+    <h2 style="margin-top:50px">Opcional: jurisprudencia de Estados Unidos</h2>
+    <p>KriteriusMX también consulta CourtListener, la base abierta de Free Law Project, con
+       jurisprudencia federal y de los 50 estados: búsqueda, texto íntegro, quién ha citado
+       un caso y un verificador que detecta citas inventadas. Si solo litigas en México,
+       sáltate esta parte — nada de lo anterior la necesita.</p>
+    <p>Esta fuente sí pide una llave, y va a ser tuya, no mía. CourtListener limita a
+       <strong>125 consultas al día por cuenta</strong>: si todos usáramos una llave mía se
+       agotaría el primer día y nadie podría trabajar. Es gratuita y se saca en dos minutos.</p>
+    <div class="tip verde"><p><em>Ayúdame a configurar derecho estadounidense en KriteriusMX</em></p></div>
+    <p>Con esa frase Claude te lleva paso por paso: crear la cuenta, copiar tu token y
+       dejarlo listo. La llave vive en la memoria del servidor mientras dure esa
+       conversación y desaparece al cerrarla, así que en la siguiente hay que volver a
+       ponerla. No se guarda en disco ni queda en ningún registro, pero sí queda en el
+       historial de tu chat: trátala como la credencial que es, y revócala cuando quieras
+       desde tu perfil de CourtListener.</p>
 
     <h2 style="margin-top:50px">Qué pedirle</h2>
     <p>Háblale en español, como le dictarías algo a un pasante muy rápido.</p>
@@ -322,6 +340,8 @@
         <li>Dame el texto íntegro de la tesis con registro 2012594.</li>
         <li>¿Publicaron algo en el DOF esta semana sobre protección de datos?</li>
         <li>Avísame cada mañana si el DOF publica algo sobre outsourcing.</li>
+        <li>Busca casos del Noveno Circuito sobre la <em>economic loss rule</em>. <span class="opc">(requiere la llave de CourtListener)</span></li>
+        <li>Revisa las citas estadounidenses de este borrador y dime cuáles no existen. <span class="opc">(íd.)</span></li>
       </ul>
     </div>
     <p>Antes de citar algo en un escrito, abre la liga que viene con el criterio y léelo en
